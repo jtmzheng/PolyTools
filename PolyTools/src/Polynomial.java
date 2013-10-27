@@ -31,7 +31,7 @@ public class Polynomial {
 	{
 		this.n = n;
 		this.degree = degree;
-		this.coefs = new double [n][degree];
+		this.coefs = new double [n][degree + 1];
 		this.isSet = true; //initialized to all zeros
 		this.paramChanged = false;
 		this.lastGradientHash = 0;
@@ -113,15 +113,22 @@ public class Polynomial {
 	{
 		// init member arrays to correct size ???????
 	}
+	
 	public double f( double [] x )
 	{
 		// calculate function value at point x
+		if( x.length != this.n )
+		{
+			System.out.println("Number of variables does not match!");
+			return -1; //TODO: Throw an exception
+		}
+		
 		double sum = 0;
 		for( int i = 0; i < this.n ; i++ )
 		{
 			for( int j = 0; j < this.degree ; j++ )
 			{
-				sum += Math.pow( coefs[i][j] , j );
+				sum += coefs[i][j] * Math.pow( x[i] , j );
 			}
 		}
 		

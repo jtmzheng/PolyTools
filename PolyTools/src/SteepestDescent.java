@@ -26,6 +26,7 @@ public class SteepestDescent {
 		this.resultsExist = false;
 		this.bestPoint = new double [x0.length];
 		this.bestGradNorm = Double.MAX_VALUE; 
+		this.bestObjVal = Double.MAX_VALUE;
 	}
 	
 	// getters
@@ -161,6 +162,7 @@ public class SteepestDescent {
 		}
 		
 		bestPoint = currentX;
+		bestObjVal = poly.f( bestPoint );
 		compTime = System.nanoTime() - startTime;
 	}
 	
@@ -199,16 +201,16 @@ public class SteepestDescent {
 	public static void main( String args [] )
 	{
 		//Test client
-		Polynomial poly = new Polynomial( 1 , 2 + 1 ); //1 variable , degree 2
+		Polynomial poly = new Polynomial( 1 , 2 ); //1 variable , degree 2
 		poly.setCoef(0, 0, 5);
 		poly.setCoef(0, 1, 8);
 		poly.setCoef(0, 2, 6);
 		SteepestDescent sd = new SteepestDescent(1e-5, 10000, 0.001, new double [] {0.0});
+		sd.run(poly);
 		System.out.println("Best obj value: " + sd.getBestObjVal());
 		System.out.println("Best grad norm: " + sd.getBestGradNorm());
-		System.out.println(sd.getCompTime());
-		System.out.println(sd.getNIter());
-		sd.run(poly);
+		System.out.println("Computation time (ms): " + sd.getCompTime() / ((double)1e6));
+		System.out.println("Number of iterations: " + sd.getNIter());
 		sd.printResults(false);
 		poly.print();
 	}
